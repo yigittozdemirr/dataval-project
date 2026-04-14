@@ -1,0 +1,39 @@
+# ── Web Framework ──────────────────────────────────────────────────────────────
+fastapi>=0.111.0
+uvicorn[standard]
+python-multipart>=0.0.9
+aiofiles
+
+# ── Data / ML ──────────────────────────────────────────────────────────────────
+pandas
+numpy
+scikit-learn
+Pillow
+tqdm
+polars
+fastparquet
+openpyxl
+pyarrow
+
+# ── System ─────────────────────────────────────────────────────────────────────
+psutil
+
+# ── Database (ORM) ─────────────────────────────────────────────────────────────
+sqlalchemy>=2.0
+psycopg2-binary        # PostgreSQL driver (production)
+
+# ── Auth ───────────────────────────────────────────────────────────────────────
+passlib[bcrypt]
+bcrypt==4.0.1
+python-jose[cryptography]
+
+# ── OAuth / Social Login ───────────────────────────────────────────────────────
+httpx                  # Async HTTP client used by oauth.py for provider calls
+
+# ── Config / Settings ──────────────────────────────────────────────────────────
+pydantic-settings      # BaseSettings for environment variable management
+python-dotenv          # Loads .env file automatically
+
+# ── Pydantic ───────────────────────────────────────────────────────────────────
+pydantic[email]
+

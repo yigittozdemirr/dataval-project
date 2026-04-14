@@ -1,0 +1,29 @@
+# ── DataVal.ai — Production Docker Compose (Portable) ─────────────────────────
+# Run anywhere with: docker-compose -f docker-compose.prod.yml up -d
+# No source code needed — images are pulled from Docker Hub.
+
+services:
+  backend:
+    image: dreemurr52/dataval-backend:v1.0
+    ports:
+      - "8000:8000"
+    volumes:
+      - backend-data:/app/data
+      - ./dataval.db:/app/dataval.db
+    env_file:
+      - .env
+    environment:
+      - FRONTEND_URL=http://localhost,http://127.0.0.1
+      - BACKEND_URL=http://localhost:8000
+    restart: unless-stopped
+
+  frontend:
+    image: dreemurr52/dataval-frontend:v1.0
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  backend-data:

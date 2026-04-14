@@ -1,0 +1,79 @@
+@import "tailwindcss";
+
+/* ── Color system ─────────────────────────────────────────── */
+:root {
+    color-scheme: dark;
+
+    /* Brand */
+    --color-accent:   #D4F03D;   /* Neon Lime  — success / CTA        */
+    --color-cyan:     #00E0FF;   /* Electric Cyan — info / system      */
+    --color-danger:   #FF3D00;   /* Neon Orange-Red — critical / error  */
+
+    /* Surfaces */
+    --color-bg:       #0E0E0A;
+    --color-card:     #161610;
+    --color-border:   rgba(255,255,255,0.05);
+
+    /* Glow intensities */
+    --glow-accent:    0 0 40px rgba(212, 240, 61,  0.12);
+    --glow-cyan:      0 0 40px rgba(0,   224, 255, 0.10);
+    --glow-danger:    0 0 40px rgba(255,  61,   0, 0.12);
+}
+
+/* ── Base ─────────────────────────────────────────────────── */
+body {
+    margin: 0;
+    background: var(--color-bg);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Glow utilities ───────────────────────────────────────── */
+.card-glow-accent {
+    box-shadow: var(--glow-accent);
+    transition: box-shadow 0.4s ease;
+}
+.card-glow-accent:hover {
+    box-shadow: 0 0 60px rgba(212, 240, 61, 0.20);
+}
+
+.card-glow-cyan {
+    box-shadow: var(--glow-cyan);
+    transition: box-shadow 0.4s ease;
+}
+.card-glow-cyan:hover {
+    box-shadow: 0 0 60px rgba(0, 224, 255, 0.18);
+}
+
+.card-glow-danger {
+    box-shadow: var(--glow-danger);
+    transition: box-shadow 0.4s ease;
+}
+.card-glow-danger:hover {
+    box-shadow: 0 0 60px rgba(255, 61, 0, 0.22);
+}
+
+/* ── Glass surface ────────────────────────────────────────── */
+.glass {
+    background: rgba(22, 22, 16, 0.70);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--color-border);
+}
+
+/* ── Typography override ──────────────────────────────────── */
+.font-mono {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+/* ── Scrollbars ───────────────────────────────────────────── */
+::-webkit-scrollbar       { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.08);
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(212,240,61,0.25); }
+
+.custom-scrollbar::-webkit-scrollbar { width: 0px; }

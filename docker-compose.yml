@@ -1,0 +1,23 @@
+# ── DataVal.ai Docker Compose ─────────────────────────────────────────────────
+
+services:
+  backend:
+    build: ./dataval_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./dataval_backend/data:/app/data
+    env_file:
+      - ./dataval_backend/.env
+    environment:
+      - FRONTEND_URL=http://localhost,http://127.0.0.1
+      - BACKEND_URL=http://localhost:8000
+    restart: unless-stopped
+
+  frontend:
+    build: ./dataval_frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
