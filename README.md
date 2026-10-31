@@ -133,4 +133,4 @@ In both cases, the frontend is served on port 80 and the backend on port 8000.
 
 ## License
 
-MIT
+[MIT](LICENSE)
