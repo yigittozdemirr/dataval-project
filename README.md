@@ -1,108 +1,136 @@
-# DataVal.ai 🚀
+# DataVal.ai
 
-[![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-green.svg)](https://fastapi.tiangolo.com/)
-[![React](https://img.shields.io/badge/React-19-blue.svg)](https://react.dev/)
-[![Vite](https://img.shields.io/badge/Vite-5.0-purple.svg)](https://vitejs.dev/)
-[![Docker](https://img.shields.io/badge/Docker-Enabled-blue.svg)](https://www.docker.com/)
+[![Python](https://img.shields.io/badge/Python-3.9%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/Vite-7-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vite.dev/)
+[![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)](https://www.docker.com/)
 
-**DataVal.ai** is an ultra-high performance, enterprise-grade AI dataset analytics, validation, and augmentation platform. It allows machine learning and data science teams to detect latency, find leakage, validate data streams, and automatically resolve potential dataset issues in real-time. Whether you are dealing with computer vision image inputs or rich tabular data, DataVal.ai automatically understands the structure and scales the processing dynamically using High-Performance Computing (HPC) patterns.
+**DataVal.ai** is an AI dataset analytics, validation and augmentation platform. Upload a dataset as a ZIP archive, and it detects the dataset type, reports quality problems such as data leakage and class imbalance, fixes or augments the data, and lets you download the result.
 
----
+## Key features
 
-## 🔥 Key Features
+- **Automatic dataset detection:** recognizes classification, segmentation and tabular datasets from the archive structure.
+- **Quality analysis:** checks for data leakage, missing values, duplicates, unreadable images and class distribution.
+- **Fast image augmentation:** uses OpenCV lookup tables (`cv2.LUT`) on a `ThreadPoolExecutor`, since OpenCV releases the GIL during processing.
+- **Safe background tasks:** per-task locks prevent cleanup from racing with an export in progress.
+- **Streaming export:** the processed dataset is streamed to the client as a ZIP file.
+- **Authentication:** email and password sign-in with JWT Bearer tokens, plus Google and GitHub OAuth2.
+- **Reports and history:** diagnostic charts, PDF reports and a history of past analyses.
 
-- **High-Performance HPC Augmentation Pipeline:** Processes thousands of images (e.g., 3000+ files) in under 15 seconds. Designed via SIMD LUT-based vectorized OpenCV operations to bypass GIL performance limits utilizing the absolute maximum of your Physical CPU Cores.
-- **Smart Data Analysis:** Detects data leakage, handles missing values, and visualizes accurate class distribution logic for both image clusters and tabular structures. 
-- **Automated Memory Safety:** Advanced garbage collector utilizing `threading.Lock` task-based mutex implementations to prevent Race Conditions and disk read/write constraints during user ZIP export operations. 
-- **Parallel Chunk ZIP Streaming:** Zero-downtime, non-blocking asynchronous generator streaming to directly tunnel the final processed ZIP streams.
-- **Secure End-to-End Authentication:** Enterprise authentication flow featuring Bearer Token systems along with automatic OAuth2 SSO configuration via modern providers (Google and GitHub).
-- **Stunning User Interface:** Powered by React, framed with modern dark Glassmorphism semantics, Framer Motion animations, and beautiful diagnostic Recharts. Tailored UX focusing on enterprise SaaS identity.
+## Architecture
 
----
-
-## 🏗️ Architecture
-
-### Frontend (Client-side)
-- **Framework:** React 19, Vite
-- **Styling & UI:** Tailwind CSS v4, Lucide React Icons
-- **Animation:** Framer Motion
-- **Charting & Reports:** Recharts, HTML2Canvas, JSPdf, React-PDF 
-- **State & Routing:** React Context API, React Router v7, Axios
-
-### Backend (Server-side)
-- **Framework:** FastAPI, Uvicorn, Pydantic
-- **ML & CV Engine:** Pandas, Scikit-Learn, OpenCV (`cv2`), NumPy
-- **Concurrency Setup:** `ThreadPoolExecutor` (GIL-Free OpenCV executions), Multi-Thread Producer-Consumer flow.
-- **Database Architecture:** SQLAlchemy ORM, SQLite / PostgreSQL Support
-- **Security:** Authlib, PyJWT, Passlib
-
----
-
-## 🛠️ Folder Structure
-
-```text
-📦 DataVal.ai
-├── 📂 dataval_frontend/      # React & Vite client codebase
-│   ├── 📂 src/               # React components, pages, lib, animations
-│   ├── 📜 package.json       # Frontend dependencies and scripts
-│   └── 📜 tailwind.config.js # Tailwind system styling configs
-│
-├── 📂 dataval_backend/       # Python & FastAPI server codebase
-│   ├── 📜 main.py            # Primary HTTP server, parallel pipelines & garbage collection
-│   ├── 📜 analyzer.py        # ML analytics validation & leakage assessment
-│   ├── 📜 detector.py        # ZIP extraction strategy schema mapping logic
-│   ├── 📜 models.py          # Database Entity Mappers
-│   └── 📜 requirements.txt   # Backend runtime dependencies
-│
-└── 📜 docker-compose.yml     # Multi-container orchestration configurations
+```mermaid
+flowchart LR
+    U[User] --> F[React frontend]
+    F -->|REST| B[FastAPI backend]
+    B --> D[Dataset detector]
+    B --> A[Analyzer]
+    B --> P[Augmentation pipeline]
+    B --> S[(SQLite or PostgreSQL)]
+    B --> O[Google and GitHub OAuth2]
 ```
 
----
+### Frontend
 
-## 🚀 Getting Started
+| Area | Technology |
+| --- | --- |
+| Framework | React 19, Vite 7 |
+| Styling | Tailwind CSS v4, Lucide icons |
+| Animation | Framer Motion |
+| Charts and reports | Recharts, html2canvas, jsPDF, React-PDF |
+| State and routing | Context API, React Router v7, Axios |
 
-### Prerequisites
-Make sure you have [Node.js (18+)](https://nodejs.org/) and [Python (3.10+)](https://www.python.org/) installed on your machine.
+### Backend
 
-### 1. Setup Backend
+| Area | Technology |
+| --- | --- |
+| Framework | FastAPI, Uvicorn, Pydantic |
+| Data and vision | Pandas, Polars, scikit-learn, NumPy, OpenCV, Pillow |
+| Concurrency | `ThreadPoolExecutor`, per-task locks |
+| Database | SQLAlchemy, SQLite for development, PostgreSQL for production |
+| Security | python-jose, Passlib, bcrypt, OAuth2 over HTTPX |
+
+## Getting started
+
+### Requirements
+
+- [Node.js](https://nodejs.org/) 20.19 or newer
+- [Python](https://www.python.org/) 3.9 or newer
+- Access to this repository (the default branch is `dataval-v1`)
+
+### 1. Backend
+
 ```bash
-# Navigate to backend directory
 cd dataval_backend
-
-# Install python dependencies
 pip install -r requirements.txt
-
-# Configure your environmental file
+pip install opencv-python-headless
 cp .env.example .env
-
-# Start the uvicorn development server
 uvicorn main:app --reload --port 8000
 ```
-> The API interactive documentation (Swagger UI) will run at `http://localhost:8000/docs`.
 
-### 2. Setup Frontend
+Fill in `.env` before starting. If `DATABASE_URL` is empty, the app falls back to a local SQLite database. Interactive API documentation is available at http://localhost:8000/docs.
+
+### 2. Frontend
+
 ```bash
-# Navigate to frontend directory
 cd dataval_frontend
-
-# Install node dependencies
 npm install
-
-# Start the vite development server
 npm run dev
 ```
-> The development frontend client will be available at `http://localhost:5173`.
 
-### 3. Docker Deployments
-For production grade deployments, you can spin up the environment effortlessly:
+The client runs at http://localhost:5173.
+
+### 3. Docker
+
+Create `dataval_backend/.env` first, then build and run from source:
+
 ```bash
-# Compile and run the integrated full-stack
-docker-compose -f docker-compose.prod.yml up --build -d
+docker compose up --build -d
 ```
 
----
+To run the published `dreemurr52/dataval-*` images instead:
 
-## 🛡️ License
+```bash
+docker compose -f docker-compose.prod.yml up -d
+```
 
-This project is open-sourced under the MIT License. Developed and optimized for advanced ML tooling and pipelines.
+In both cases, the frontend is served on port 80 and the backend on port 8000.
+
+## Main API endpoints
+
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| `POST` | `/stage` | Upload a dataset and create a task |
+| `POST` | `/analyze/{task_id}` | Start the analysis |
+| `GET` | `/status/{task_id}` | Read task status and results |
+| `POST` | `/abort/{task_id}` | Cancel a running task |
+| `POST` | `/fix/{task_id}` | Apply automatic fixes |
+| `POST` | `/augment-apply/{task_id}` | Apply augmentations |
+| `GET` | `/api/export/{task_id}` | Download the processed dataset |
+| `GET` | `/history` | List past analyses |
+| `POST` | `/api/auth/register`, `/api/auth/login` | Create an account or sign in |
+
+## Project structure
+
+```text
+.
+├── dataval_backend/
+│   ├── main.py              # API server and processing pipelines
+│   ├── analyzer.py          # Validation and leakage analysis
+│   ├── detector.py          # Dataset type detection
+│   ├── auth.py, oauth.py    # Authentication
+│   ├── config.py            # Settings
+│   ├── database.py, models.py
+│   └── requirements.txt
+├── dataval_frontend/
+│   ├── src/pages/           # Application pages
+│   ├── src/views/           # Upload, processing and results views
+│   └── src/components/      # Shared components
+├── docker-compose.yml       # Build and run from source
+└── docker-compose.prod.yml  # Run published images
+```
+
+## License
+
+MIT
